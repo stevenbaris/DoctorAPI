@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorApp", "DoctorApp\DoctorApp.csproj", "{E0554F58-446B-41C4-8E33-DD1E35D6D4D0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorAPI", "DoctorAPI\DoctorAPI.csproj", "{182CEF96-9DB4-4C9F-BDE8-DC41F84F8B90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorAPI", "DoctorAPI\DoctorAPI.csproj", "{182CEF96-9DB4-4C9F-BDE8-DC41F84F8B90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E0554F58-446B-41C4-8E33-DD1E35D6D4D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0554F58-446B-41C4-8E33-DD1E35D6D4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0554F58-446B-41C4-8E33-DD1E35D6D4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0554F58-446B-41C4-8E33-DD1E35D6D4D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{182CEF96-9DB4-4C9F-BDE8-DC41F84F8B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{182CEF96-9DB4-4C9F-BDE8-DC41F84F8B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{182CEF96-9DB4-4C9F-BDE8-DC41F84F8B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
