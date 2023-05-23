@@ -1,100 +1,68 @@
 ﻿using DoctorApp.Models;
-using DoctorApp.Repository;
-using DoctorApp.ViewModel;
+using DoctorAPP.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Text;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace DoctorApp.Controllers
 {
     public class DoctorController : Controller
     {
-        string baseURL = "http://localhost:5185";
+        ITaskRepository _repo;
 
-        HttpClient httpClient = new HttpClient();
-
-        public IActionResult Index()
+        public DoctorController(ITaskRepository repo)
         {
-            var response = httpClient.GetAsync(baseURL + "/api/Doctor/getdoctorlist").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var data = response.Content.ReadAsStringAsync().Result;
-                List<Doctor> todos = JsonConvert.DeserializeObject<List<Doctor>>(data);
-                return View(todos);
-            }
+            this._repo = repo;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var tasklist = await _repo.GetAllDoctor();
+            return View(tasklist);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
             return View();
         }
-        [HttpGet]
-        public IActionResult AddTodo()
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Doctor newDoctor) // model binded this where the views data is accepted 
         {
-            return View();
+            await _repo.AddDoctor(newDoctor);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int doctorId)
+        {
+            var updated = await _repo.GetDoctorById(doctorId);
+            if (updated == null)
+                return NotFound();
+
+            return View(updated);
         }
         [HttpPost]
-        public IActionResult AddTodo(AddDoctorViewModel todoVM)
+        public async Task<IActionResult> Update(int DoctorId, Doctor newDoctor)
         {
-            string newBaseURl = baseURL + "/api/Doctor/adddoctor";
-            var stringContent = new StringContent(JsonConvert.SerializeObject(todoVM), Encoding.UTF8, "application/json");
-            var response = httpClient.PostAsync(newBaseURl, stringContent).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var responsecontent = response.Content.ReadAsStringAsync().Result;
-                Doctor todo = JsonConvert.DeserializeObject<Doctor>(responsecontent);
+            if (DoctorId != newDoctor.DoctorId)
+                return NotFound();
 
-                return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var modified = await _repo.UpdateDoctor(DoctorId, newDoctor);
+                return RedirectToAction(nameof(Index), new { DoctorId = newDoctor.DoctorId });
             }
 
-            return View();
+            return View(newDoctor);
         }
-        [HttpGet]
-        public IActionResult Details(int todoId)
-        {
-            var response = httpClient.GetAsync(baseURL + "/api/Doctor/getdoctorbyid/" + todoId).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var data = response.Content.ReadAsStringAsync().Result;
-                Doctor todos = JsonConvert.DeserializeObject<Doctor>(data);
-                return View(todos);
-            }
-            return View();
-        }
-        [HttpGet]
-        public IActionResult Edit(int todoId)
-        {
-            var response = httpClient.GetAsync(baseURL + "/api/Doctor/getdoctorbyid/" + todoId).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var data = response.Content.ReadAsStringAsync().Result;
-                AddDoctorViewModel todos = JsonConvert.DeserializeObject<AddDoctorViewModel>(data);
-                return View(todos);
-            }
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Edit(AddDoctorViewModel todoVM, int todoId)
-        {
-            string data = JsonConvert.SerializeObject(todoVM);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
-            var response = httpClient.PutAsync(baseURL + "/api/Doctor/updatedoctor/" + todoId, content).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var responsecontent = response.Content.ReadAsStringAsync().Result;
-                Doctor todo = JsonConvert.DeserializeObject<Doctor>(responsecontent);
-                return View(todo);
-            }
-            return View();
-        }
-        public IActionResult Delete(int todoId)
+        public async Task<IActionResult> Delete(int DoctorId)
         {
-            var response = httpClient.DeleteAsync(baseURL + "/api/Doctor/deletedoctor/" + todoId).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-            return BadRequest(response);
+            await _repo.DeleteDoctor(DoctorId);
+            return RedirectToAction("Index");
         }
     }
 }
-
-

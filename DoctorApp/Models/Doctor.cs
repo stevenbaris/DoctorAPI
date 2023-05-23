@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace DoctorApp.Models
 {
-    public class Doctor 
+    public class Doctor
     {
         public int DoctorId { get; set; }
 

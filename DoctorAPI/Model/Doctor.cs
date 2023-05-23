@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace DoctorApp.Models.Physician
+namespace DoctorAPI.Models
 {
     public class Doctor
     {
@@ -18,7 +18,7 @@ namespace DoctorApp.Models.Physician
         public string LastName { get; set; }
 
         [Required]
-        [DisplayName("Description")]
+        [DisplayName("Specialization")]
         [MaxLength(4000)]
         public string Specialization { get; set; }
 

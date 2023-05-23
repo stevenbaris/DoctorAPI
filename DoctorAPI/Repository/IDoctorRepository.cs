@@ -1,13 +1,14 @@
-﻿using DoctorApp.Models.Physician;
+﻿using DoctorAPI.DTO;
+using DoctorAPI.Models;
 
 namespace DoctorAPI.Repository
 {
     public interface IDoctorRepository
     {
-         Task<List<Doctor>> GetDoctorList();
-         Task<IEnumerable<Doctor>> GetDoctorById(int Id);
-         Task<int> AddDoctor(Doctor doctor);
-         Task<int> UpdateDoctor(Doctor doctor);
-         Task<int> DeleteDoctor(int Id);
+        Task<List<Doctor>> GetAllDoctor();
+        Doctor GetDoctorById(int id);
+        Task AddDoctor(DoctorDTO doctorDto);
+        Task UpdateDoctor(int doctorId, DoctorDTO doctorDto);
+        Doctor DeleteDoctor(int doctorId);
     }
 }

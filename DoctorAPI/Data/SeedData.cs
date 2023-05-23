@@ -1,7 +1,7 @@
-﻿using DoctorApp.Models.Physician;
+﻿using DoctorAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DoctorApp.Data
+namespace DoctorAPI.Data
 {
     public static class SeedData
     {

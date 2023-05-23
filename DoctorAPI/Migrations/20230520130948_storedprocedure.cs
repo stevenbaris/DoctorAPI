@@ -8,14 +8,14 @@ namespace DoctorAPI.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var sp1 = @"CREATE OR ALTER PROCEDURE [dbo].[GetDoctorList]
+            var sp1 = @"CREATE OR ALTER PROCEDURE [dbo].[GetAllDoctor]
             AS
             BEGIN
 	            SELECT * FROM dbo.Doctors
             END";
             migrationBuilder.Sql(sp1);
 
-            var sp2 = @"CREATE OR ALTER PROCEDURE [dbo].[GetDoctorByID]
+            var sp2 = @"CREATE OR ALTER PROCEDURE [dbo].[GetDoctorById]
             @DoctorId int
             AS
             BEGIN
@@ -28,7 +28,7 @@ namespace DoctorAPI.Migrations
             END";
             migrationBuilder.Sql(sp2);
 
-            var sp3 = @"CREATE OR ALTER PROCEDURE [dbo].[AddNewDoctor]
+            var sp3 = @"CREATE OR ALTER PROCEDURE [dbo].[AddDoctor]
             @FirstName [nvarchar](max),
             @LastName [nvarchar](max),
             @Specialization [nvarchar](max)
@@ -65,10 +65,16 @@ namespace DoctorAPI.Migrations
             END";
             migrationBuilder.Sql(sp4);
 
-            var sp5 = @"CREATE OR ALTER PROCEDURE [dbo].[DeleteDoctorByID]
+            var sp5 = @"CREATE OR ALTER PROCEDURE [dbo].[DeleteDoctor]
             @DoctorId int
             AS
             BEGIN
+                SELECT
+		            DoctorId,
+		            FirstName,
+		            LastName,
+		            Specialization
+	            FROM dbo.Doctors where DoctorId = @DoctorId
 	            DELETE FROM dbo.Doctors where DoctorId = @DoctorId
             END";
             migrationBuilder.Sql(sp5);
@@ -76,7 +82,7 @@ namespace DoctorAPI.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            var sp1 = @"DROP PROCEDURE [dbo].[GetDoctorList]";
+            var sp1 = @"DROP PROCEDURE [dbo].[GetAllDoctor]";
 
             migrationBuilder.Sql(sp1);
 
@@ -84,7 +90,7 @@ namespace DoctorAPI.Migrations
 
             migrationBuilder.Sql(sp2);
 
-            var sp3 = @"DROP PROCEDURE [dbo].[AddNewDoctor]";
+            var sp3 = @"DROP PROCEDURE [dbo].[AddDoctor]";
 
             migrationBuilder.Sql(sp3);
 
@@ -92,7 +98,7 @@ namespace DoctorAPI.Migrations
 
             migrationBuilder.Sql(sp4);
 
-            var sp5 = @"DROP PROCEDURE [dbo].[DeleteDoctorByID]";
+            var sp5 = @"DROP PROCEDURE [dbo].[DeleteDoctor]";
 
             migrationBuilder.Sql(sp5);
         }

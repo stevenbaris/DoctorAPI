@@ -1,104 +1,73 @@
 ﻿using DoctorAPI.Repository;
-using DoctorApp.Models.Physician;
+using DoctorAPI.Repository.MsSQL;
+using DoctorAPI.DTO;
+using DoctorAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class DoctorController : Controller
+    [Route("api/[controller]")]
+    [Authorize]
+    public class DoctorController : ControllerBase
     {
-        IDoctorRepository _repo;
+        private readonly IDoctorRepository _repo;
 
         public DoctorController(IDoctorRepository repo)
         {
             _repo = repo;
         }
 
-        [HttpGet("getdoctorlist")]
-        public async Task<List<Doctor>> GetDoctorList()
+        [HttpGet]
+        public async Task<IActionResult> GetAllDoctor()
         {
-            try
-            {
-                return await _repo.GetDoctorList();
-            }
-            catch
-            {
-                throw;
-            }
+            var result = await _repo.GetAllDoctor();
+            return Ok(result);
         }
 
-        [HttpGet("getdoctorbyid")]
-        public async Task<IEnumerable<Doctor>> GetDoctorById(int Id)
+        [HttpGet("{id}")]
+        public IActionResult GetDoctorById(int id)
         {
-            try
-            {
-                var response = await _repo.GetDoctorById(Id);
+            var result = _repo.GetDoctorById(id);
 
-                if (response == null)
-                {
-                    return null;
-                }
-
-                return response;
-            }
-            catch
+            if (result == null)
             {
-                throw;
+                var errormessage = $"Doctor ID: {id} not found.";
+                return NotFound(errormessage);
             }
+            return Ok(result);
         }
 
-        [HttpPost("adddoctor")]
-        public async Task<IActionResult> AddDoctor(Doctor doctor)
+        [HttpPost]
+        public async Task<IActionResult> AddDoctor(DoctorDTO doctorDto)
         {
-            if (doctor == null)
-            {
-                return BadRequest();
-            }
+            await _repo.AddDoctor(doctorDto);
 
-            try
-            {
-                var response = await _repo.AddDoctor(doctor);
-
-                return Ok(response);
-            }
-            catch
-            {
-                throw;
-            }
+            return Ok(doctorDto);
         }
 
-        [HttpPut("updatedoctor")]
-        public async Task<IActionResult> UpdateDoctor(Doctor doctor)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateDoctor(int id, DoctorDTO doctorDto)
         {
-            if (doctor == null)
-            {
-                return BadRequest();
-            }
+            await _repo.UpdateDoctor(id, doctorDto);
 
-            try
-            {
-                var result = await _repo.UpdateDoctor(doctor);
-                return Ok(result);
-            }
-            catch
-            {
-                throw;
-            }
+            return Ok(doctorDto);
         }
 
-        [HttpDelete("deletedoctor")]
-        public async Task<int> DeleteDoctor(int Id)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteDoctor(int id)
         {
-            try
+            var result = _repo.DeleteDoctor(id);
+
+            if (result == null)
             {
-                var response = await _repo.DeleteDoctor(Id);
-                return response;
+                var errormessage = $"Doctor ID: {id} not found.";
+                return NotFound(errormessage);
             }
-            catch
-            {
-                throw;
-            }
+
+            return Ok(result);
         }
     }
 }
+

@@ -7,33 +7,48 @@
 @{
 }
 
-<H1>Get All Todos</H1>
+<header class="card1">
 
-<a asp-action="AddTodo" asp-controller="Doctor">Add Todo</a>
+    <div>   
 
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">User Id</th>
-      <th scope="col">title</th>
-      <th scope="col">completed</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    @foreach(var todo in Model){
-        <tr>
-          <th scope="row">@todo.DoctorId</th>
-          <td>@todo.FirstName</td>
-          <td>@todo.LastName</td>
-          <td>@todo.Specialization</td>
-                <td><a asp-controller="Doctor" asp-action="Details" asp-route-todoId="@todo.DoctorId">View</a></td>
-                <td><a asp-controller="Doctor" asp-action="Edit" asp-route-todoId="@todo.DoctorId">Edit</a></td>
-                <td><a asp-controller="Doctor" asp-action="Delete" asp-route-todoId="@todo.DoctorId">Delete</a></td>
-        </tr>
-    }
-  </tbody>
-</table>
+        <center><h1 style="font-weight: bold; font-family: Poppins; color:#002756">List of Doctors</h1></center>
+        <hr />
+        <p style="color: gray">Doctors > Index</p>
+        <br />
+        @*<p></a>int Count</p>*@
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a button class="btn btn-outline-primary " type="button" asp-controller="Doctor" asp-action="Create">+ New Doctor</a>
+        </div>
+        <br />
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Specialization</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var todo in Model)
+                {
+                    <tr>
+                        <th scope="row">@todo.DoctorId</th>
+                        <td>@todo.FirstName</td>
+                        <td>@todo.LastName</td>
+                        <td>@todo.Specialization</td>
+                        <td><a asp-controller="Doctor" asp-action="Update" asp-route-doctorId="@todo.DoctorId">Edit</a></td>
+                        <td><a asp-controller="Doctor" asp-action="Delete" asp-route-DoctorId="@todo.DoctorId">Delete</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</header>
+
+
+
